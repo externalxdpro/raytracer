@@ -1,0 +1,18 @@
+#+title: README
+
+* Run
+** Build
+#+begin_src shell
+cmake -B build
+cmake --build build
+#+end_src
+** Output Image
+#+begin_src shell
+build/raytracer > image.ppm
+#+end_src
+** Open Image
+Open the ppm file in an image viewer
+* Run (One-Liner)
+#+begin_src shell
+cmake -B build && cmake --build build && build/raytracer > image.ppm
+#+end_src
