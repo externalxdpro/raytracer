@@ -1,8 +1,6 @@
 #ifndef HITTABLE_H_
 #define HITTABLE_H_
 
-#include "ray.hpp"
-
 class Hittable {
   public:
     class HitRecord {
