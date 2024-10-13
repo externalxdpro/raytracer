@@ -11,7 +11,7 @@ class Ray {
     Ray() {}
     Ray(const Vec3 &origin, const Vec3 &dir) : origin(origin), dir(dir) {}
 
-    const Vec3 at(double t) { return origin + dir * t; }
+    Vec3 at(double t) const { return origin + dir * t; }
 };
 
 #endif // RAY_H_
