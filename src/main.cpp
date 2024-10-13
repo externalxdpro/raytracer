@@ -11,15 +11,15 @@ double hitSphere(const Vec3 &center, double radius, const Ray &r) {
     // Do quadratic formula to calculate t in
     // t^2(dir . dir) - 2t(dir) . oc + (oc . oc - radius^2)
     // to check if ray hit sphere
-    double a            = r.dir.dot(r.dir);
-    double b            = r.dir.dot(oc) * -2.0;
-    double c            = oc.dot(oc) - radius * radius;
-    auto   discriminant = b * b - 4 * a * c;
+    double a            = r.dir.length_squared();
+    double h            = r.dir.dot(oc);
+    double c            = oc.length_squared() - radius * radius;
+    auto   discriminant = h * h - a * c;
 
     if (discriminant < 0) {
         return -1;
     } else {
-        return (-b - std::sqrt(discriminant)) / (2 * a);
+        return (h - std::sqrt(discriminant)) / a;
     }
 
     return (discriminant >= 0);
