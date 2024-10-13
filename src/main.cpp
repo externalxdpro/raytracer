@@ -5,6 +5,29 @@
 #include <format>
 #include <iostream>
 
+bool hitSphere(const Vec3 &center, double radius, const Ray &r) {
+    Vec3 oc = center - r.origin;
+
+    // Do quadratic formula to calculate t in
+    // t^2(dir . dir) - 2t(dir) . oc + (oc . oc - radius^2)
+    // to check if ray hit sphere
+    double a            = r.dir.dot(r.dir);
+    double b            = r.dir.dot(oc) * -2.0;
+    double c            = oc.dot(oc) - radius * radius;
+    auto   discriminant = b * b - 4 * a * c;
+    return (discriminant >= 0);
+}
+
+Colour rayColour(const Ray &r) {
+    if (hitSphere(Vec3(0, 0, -1), 0.5, r)) {
+        return {1, 0, 0};
+    }
+
+    Vec3   unitDir = r.dir.unitVector();
+    double a       = (unitDir.y + 1) / 2;
+    return Colour(1, 1, 1) * (1.0 - a) + Colour(0.5, 0.7, 1.0) * a;
+}
+
 int main(int argc, char *argv[]) {
     const double aspectRatio = 16.0 / 9.0;
     const int    imgWidth    = 400;
