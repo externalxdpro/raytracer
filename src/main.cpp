@@ -5,7 +5,7 @@
 #include <format>
 #include <iostream>
 
-bool hitSphere(const Vec3 &center, double radius, const Ray &r) {
+double hitSphere(const Vec3 &center, double radius, const Ray &r) {
     Vec3 oc = center - r.origin;
 
     // Do quadratic formula to calculate t in
@@ -15,12 +15,21 @@ bool hitSphere(const Vec3 &center, double radius, const Ray &r) {
     double b            = r.dir.dot(oc) * -2.0;
     double c            = oc.dot(oc) - radius * radius;
     auto   discriminant = b * b - 4 * a * c;
+
+    if (discriminant < 0) {
+        return -1;
+    } else {
+        return (-b - std::sqrt(discriminant)) / (2 * a);
+    }
+
     return (discriminant >= 0);
 }
 
 Colour rayColour(const Ray &r) {
-    if (hitSphere(Vec3(0, 0, -1), 0.5, r)) {
-        return {1, 0, 0};
+    double t = hitSphere(Vec3(0, 0, -1), 0.5, r);
+    if (t > 0) {
+        const Vec3 n = (r.at(t) - Vec3(0, 0, -1)).unitVector();
+        return Colour(n.x + 1, n.y + 1, n.z + 1) / 2;
     }
 
     Vec3   unitDir = r.dir.unitVector();
