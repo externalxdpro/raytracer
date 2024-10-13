@@ -11,8 +11,7 @@ class Sphere : public Hittable {
     Sphere(const Vec3 &center, double radius)
         : center(center), radius(std::fmax(0, radius)) {}
 
-    bool hit(const Ray &r, double tMin, double tMax,
-             HitRecord &rec) const override {
+    bool hit(const Ray &r, Interval t, HitRecord &rec) const override {
         Vec3 oc = center - r.origin;
 
         // Do quadratic formula to calculate t in
@@ -30,9 +29,9 @@ class Sphere : public Hittable {
         double sqrtd = std::sqrt(discriminant);
 
         double root = (h - sqrtd) / a;
-        if (root <= tMin || tMax <= root) {
+        if (!t.surrounds(root)) {
             root = (h + sqrtd) / a;
-            if (root <= tMin || tMax <= root) {
+            if (!t.surrounds(root)) {
                 return false;
             }
         }

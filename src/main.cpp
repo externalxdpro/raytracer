@@ -3,11 +3,10 @@
 #include "hittable.hpp"
 #include "hittable_list.hpp"
 #include "sphere.hpp"
-#include <memory>
 
 Colour rayColour(const Ray &r, const Hittable &world) {
     Hittable::HitRecord rec;
-    if (world.hit(r, 0, inf, rec)) {
+    if (world.hit(r, Interval(0, inf), rec)) {
         return (rec.normal + Colour(1, 1, 1)) / 2;
     }
 

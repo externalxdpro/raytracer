@@ -13,6 +13,7 @@ const double pi  = M_PI;
 inline double degToRad(double deg) { return deg * pi / 180.0; }
 
 #include "colour.hpp"
+#include "interval.hpp"
 #include "ray.hpp"
 #include "vec3.hpp"
 

@@ -16,14 +16,13 @@ class HittableList : public Hittable {
 
     void add(std::shared_ptr<Hittable> obj) { objs.push_back(obj); }
 
-    bool hit(const Ray &r, double tMin, double tMax,
-             HitRecord &rec) const override {
+    bool hit(const Ray &r, Interval t, HitRecord &rec) const override {
         HitRecord tempRec;
         bool      hitAnything = false;
-        double    currClosest = tMax;
+        double    currClosest = t.max;
 
         for (const auto &obj : objs) {
-            if (obj->hit(r, tMin, currClosest, tempRec)) {
+            if (obj->hit(r, Interval(t.min, currClosest), tempRec)) {
                 hitAnything = true;
                 currClosest = tempRec.t;
                 rec         = tempRec;
