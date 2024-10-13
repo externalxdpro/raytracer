@@ -5,10 +5,18 @@
 
 class Hittable {
   public:
-    struct HitRecord {
+    class HitRecord {
+      public:
         Vec3   p;
         Vec3   normal;
         double t;
+        bool   frontFace;
+
+        void setFaceNormal(const Ray &r, const Vec3 &outwardNormal) {
+            // NOTE: outwardNormal is expected to have unit length
+            frontFace = r.dir.dot(outwardNormal) < 0;
+            normal    = frontFace ? outwardNormal : -outwardNormal;
+        }
     };
 
     virtual ~Hittable() = default;

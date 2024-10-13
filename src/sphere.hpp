@@ -38,9 +38,9 @@ class Sphere : public Hittable {
             }
         }
 
-        rec.t      = root;
-        rec.p      = r.at(rec.t);
-        rec.normal = (rec.p - center) / radius;
+        rec.t = root;
+        rec.p = r.at(rec.t);
+        rec.setFaceNormal(r, (rec.p - center) / radius);
 
         return true;
     }
