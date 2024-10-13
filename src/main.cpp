@@ -1,3 +1,6 @@
+#include "colour.hpp"
+#include "vec3.hpp"
+
 #include <format>
 #include <iostream>
 
@@ -12,11 +15,9 @@ int main(int argc, char *argv[]) {
         std::clog << std::format("\rScanlines remaining: {} ", imgHeight - j)
                   << std::flush;
         for (int i = 0; i < imgWidth; i++) {
-            int r = 255.999 * ((double)i / (imgWidth - 1));
-            int g = 255.999 * ((double)j / (imgHeight - 1));
-            int b = 255.999 * 0;
-
-            std::cout << std::format("{} {} {}\n", r, g, b);
+            Colour pixelColour = {(double)i / (imgWidth - 1),
+                                  (double)j / (imgHeight - 1), 0};
+            writeColour(std::cout, pixelColour);
         }
     }
 
