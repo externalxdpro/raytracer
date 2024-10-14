@@ -16,6 +16,7 @@ int main(int argc, char *argv[]) {
     cam.imgWidth    = 400;
 
     cam.samplesPerPixel = 100;
+    Vec3::randUnitVector();
 
     cam.render(world);
 

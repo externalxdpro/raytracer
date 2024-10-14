@@ -1,6 +1,8 @@
 #ifndef VEC3_H_
 #define VEC3_H_
 
+#include "util.hpp"
+
 #include <cmath>
 #include <format>
 #include <iostream>
@@ -35,6 +37,13 @@ class Vec3 {
         return this->x * this->x + this->y * this->y + this->z * this->z;
     }
 
+    static Vec3 rand() { return {randDouble(), randDouble(), randDouble()}; }
+
+    static Vec3 rand(double min, double max) {
+        return {randDouble(min, max), randDouble(min, max),
+                randDouble(min, max)};
+    }
+
     std::ostream &operator<<(std::ostream &out) const {
         return out << std::format("{} {} {}", this->x, this->y, this->z);
     }
@@ -67,6 +76,24 @@ class Vec3 {
     }
 
     Vec3 unitVector() const { return *this / this->length(); }
+
+    static Vec3 randUnitVector() {
+        while (true) {
+            Vec3   p     = Vec3::rand(-1, 1);
+            double lensq = p.length_squared();
+            if (1e-160 < lensq && lensq <= 1) {
+                return p / sqrt(lensq);
+            }
+        }
+    }
+
+    Vec3 randOnHemisphere() const {
+        Vec3 onUnitSphere = randUnitVector();
+        if (this->dot(onUnitSphere) > 0.0) {
+            return onUnitSphere;
+        }
+        return -onUnitSphere;
+    }
 };
 
 #endif // VEC3_H_

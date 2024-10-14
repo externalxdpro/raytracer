@@ -88,7 +88,8 @@ class Camera {
     Colour rayColour(const Ray &r, const Hittable &world) const {
         Hittable::HitRecord rec;
         if (world.hit(r, Interval(0, inf), rec)) {
-            return (rec.normal + Colour(1, 1, 1)) / 2;
+            Vec3 dir = rec.normal.randOnHemisphere();
+            return rayColour(Ray(rec.p, dir), world) * 0.5;
         }
 
         Vec3   unitDir = r.dir.unitVector();
