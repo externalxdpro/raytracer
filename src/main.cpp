@@ -1,10 +1,8 @@
-#include "util.hpp"
-
-#include "hittable.hpp"
+#include "camera.hpp"
 #include "hittable_list.hpp"
 #include "sphere.hpp"
 
-#include "camera.hpp"
+#include <memory>
 
 int main(int argc, char *argv[]) {
     HittableList world;

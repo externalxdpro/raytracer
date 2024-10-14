@@ -1,6 +1,10 @@
 #ifndef HITTABLE_H_
 #define HITTABLE_H_
 
+#include "interval.hpp"
+#include "ray.hpp"
+#include "vec3.hpp"
+
 class Hittable {
   public:
     class HitRecord {

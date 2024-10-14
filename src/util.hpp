@@ -2,10 +2,7 @@
 #define UTIL_H_
 
 #include <cmath>
-#include <format>
-#include <iostream>
 #include <limits>
-#include <memory>
 #include <random>
 
 const double inf = std::numeric_limits<double>::infinity();
@@ -22,10 +19,5 @@ inline double randDouble() {
 inline double randDouble(double min, double max) {
     return min + (max - min) * randDouble();
 }
-
-#include "colour.hpp"
-#include "interval.hpp"
-#include "ray.hpp"
-#include "vec3.hpp"
 
 #endif // UTIL_H_

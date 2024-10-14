@@ -1,7 +1,13 @@
 #ifndef CAMERA_H_
 #define CAMERA_H_
 
+#include "colour.hpp"
+#include "hittable.hpp"
 #include "util.hpp"
+#include "vec3.hpp"
+
+#include <format>
+#include <iostream>
 
 class Camera {
   public:

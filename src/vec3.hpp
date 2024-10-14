@@ -1,6 +1,10 @@
 #ifndef VEC3_H_
 #define VEC3_H_
 
+#include <cmath>
+#include <format>
+#include <iostream>
+
 class Vec3 {
   public:
     double x, y, z;
