@@ -11,8 +11,9 @@
 
 class Camera {
   public:
-    double aspectRatio = 1.0;
-    int    imgWidth    = 100;
+    double aspectRatio     = 1.0;
+    int    imgWidth        = 100;
+    int    samplesPerPixel = 10;
 
     void render(const Hittable &world) {
         initialize();
@@ -26,13 +27,13 @@ class Camera {
                                      imgHeight - j)
                       << std::flush;
             for (int i = 0; i < imgWidth; i++) {
-                Vec3 pixelCenter =
-                    pixel0Pos + (pixelDeltaU * i) + (pixelDeltaV * j);
-                Vec3 rayDir = pixelCenter - center;
-                Ray  r      = {center, rayDir};
-
-                Colour pixelColour = rayColour(r, world);
-                writeColour(std::cout, pixelColour);
+                Colour pixelColour = {0, 0, 0};
+                for (int sample = 0; sample < samplesPerPixel; sample++) {
+                    Ray r = getRay(i, j);
+                    pixelColour += rayColour(r, world);
+                }
+                Colour scaled = pixelColour * pixelSamplesScale;
+                writeColour(std::cout, scaled);
             }
         }
 
@@ -40,15 +41,18 @@ class Camera {
     }
 
   private:
-    int  imgHeight;
-    Vec3 center;
-    Vec3 pixel0Pos;
-    Vec3 pixelDeltaU;
-    Vec3 pixelDeltaV;
+    int    imgHeight;
+    double pixelSamplesScale;
+    Vec3   center;
+    Vec3   pixel0Pos;
+    Vec3   pixelDeltaU;
+    Vec3   pixelDeltaV;
 
     void initialize() {
         imgHeight = int(imgWidth / aspectRatio);
         imgHeight = (imgHeight < 1) ? 1 : imgHeight;
+
+        pixelSamplesScale = 1.0 / samplesPerPixel;
 
         center = {0, 0, 0};
 
@@ -65,6 +69,20 @@ class Camera {
         Vec3 viewportTopLeft =
             center - Vec3(0, 0, focalLength) - viewportU / 2 - viewportV / 2;
         pixel0Pos = viewportTopLeft + (pixelDeltaU + pixelDeltaV) / 2;
+    }
+
+    Ray getRay(int i, int j) const {
+        Vec3 offset      = sampleSquare();
+        Vec3 pixelSample = pixel0Pos + (pixelDeltaU * (i + offset.x)) +
+                           (pixelDeltaV * (j + offset.y));
+
+        Vec3 origin = center;
+        Vec3 dir    = pixelSample - origin;
+        return {origin, dir};
+    }
+
+    Vec3 sampleSquare() const {
+        return {randDouble() - 0.5, randDouble() - 0.5, 0};
     }
 
     Colour rayColour(const Ray &r, const Hittable &world) const {

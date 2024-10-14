@@ -1,3 +1,5 @@
+#include "vec3.hpp"
+
 #include "camera.hpp"
 #include "hittable_list.hpp"
 #include "sphere.hpp"
@@ -12,6 +14,8 @@ int main(int argc, char *argv[]) {
     Camera cam;
     cam.aspectRatio = 16.0 / 9.0;
     cam.imgWidth    = 400;
+
+    cam.samplesPerPixel = 100;
 
     cam.render(world);
 
