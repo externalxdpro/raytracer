@@ -12,11 +12,10 @@ int main(int argc, char *argv[]) {
     world.add(std::make_shared<Sphere>(Vec3(0, -100.5, -1), 100));
 
     Camera cam;
-    cam.aspectRatio = 16.0 / 9.0;
-    cam.imgWidth    = 400;
-
+    cam.aspectRatio     = 16.0 / 9.0;
+    cam.imgWidth        = 400;
     cam.samplesPerPixel = 100;
-    Vec3::randUnitVector();
+    cam.maxDepth        = 50;
 
     cam.render(world);
 

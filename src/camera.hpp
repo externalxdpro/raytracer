@@ -14,6 +14,7 @@ class Camera {
     double aspectRatio     = 1.0;
     int    imgWidth        = 100;
     int    samplesPerPixel = 10;
+    int    maxDepth        = 10;
 
     void render(const Hittable &world) {
         initialize();
@@ -30,7 +31,7 @@ class Camera {
                 Colour pixelColour = {0, 0, 0};
                 for (int sample = 0; sample < samplesPerPixel; sample++) {
                     Ray r = getRay(i, j);
-                    pixelColour += rayColour(r, world);
+                    pixelColour += rayColour(r, maxDepth, world);
                 }
                 Colour scaled = pixelColour * pixelSamplesScale;
                 writeColour(std::cout, scaled);
@@ -85,11 +86,15 @@ class Camera {
         return {randDouble() - 0.5, randDouble() - 0.5, 0};
     }
 
-    Colour rayColour(const Ray &r, const Hittable &world) const {
+    Colour rayColour(const Ray &r, int depth, const Hittable &world) const {
+        if (depth <= 0) {
+            return {0, 0, 0};
+        }
+
         Hittable::HitRecord rec;
-        if (world.hit(r, Interval(0, inf), rec)) {
+        if (world.hit(r, Interval(0.001, inf), rec)) {
             Vec3 dir = rec.normal.randOnHemisphere();
-            return rayColour(Ray(rec.p, dir), world) * 0.5;
+            return rayColour(Ray(rec.p, dir), depth - 1, world) * 0.5;
         }
 
         Vec3   unitDir = r.dir.unitVector();
