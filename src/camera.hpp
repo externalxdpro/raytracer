@@ -93,7 +93,7 @@ class Camera {
 
         Hittable::HitRecord rec;
         if (world.hit(r, Interval(0.001, inf), rec)) {
-            Vec3 dir = rec.normal.randOnHemisphere();
+            Vec3 dir = rec.normal + Vec3::randUnitVector();
             return rayColour(Ray(rec.p, dir), depth - 1, world) * 0.5;
         }
 
