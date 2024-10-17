@@ -3,10 +3,13 @@
 
 #include "hittable.hpp"
 
+#include <memory>
+
 class Sphere : public Hittable {
   public:
-    Vec3   center;
-    double radius;
+    Vec3                      center;
+    double                    radius;
+    std::shared_ptr<Material> mat;
 
     Sphere(const Vec3 &center, double radius)
         : center(center), radius(std::fmax(0, radius)) {}
@@ -39,6 +42,7 @@ class Sphere : public Hittable {
         rec.t = root;
         rec.p = r.at(rec.t);
         rec.setFaceNormal(r, (rec.p - center) / radius);
+        rec.mat = mat;
 
         return true;
     }

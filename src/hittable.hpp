@@ -5,14 +5,19 @@
 #include "ray.hpp"
 #include "vec3.hpp"
 
+#include <memory>
+
+class Material;
+
 class Hittable {
   public:
     class HitRecord {
       public:
-        Vec3   p;
-        Vec3   normal;
-        double t;
-        bool   frontFace;
+        Vec3                      p;
+        Vec3                      normal;
+        std::shared_ptr<Material> mat;
+        double                    t;
+        bool                      frontFace;
 
         void setFaceNormal(const Ray &r, const Vec3 &outwardNormal) {
             // NOTE: outwardNormal is expected to have unit length
