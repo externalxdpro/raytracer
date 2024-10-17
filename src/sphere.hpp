@@ -20,9 +20,9 @@ class Sphere : public Hittable {
         // Do quadratic formula to calculate t in
         // t^2(dir . dir) - 2t(dir) . oc + (oc . oc - radius^2)
         // to check if ray hit sphere
-        double a = r.dir.length_squared();
+        double a = r.dir.lengthSquared();
         double h = r.dir.dot(oc);
-        double c = oc.length_squared() - radius * radius;
+        double c = oc.lengthSquared() - radius * radius;
 
         auto discriminant = h * h - a * c;
         if (discriminant < 0) {

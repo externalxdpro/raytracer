@@ -32,9 +32,15 @@ class Vec3 {
 
     Vec3 &operator/=(double t) { return *this *= 1 / t; }
 
-    const double length() const { return std::sqrt(this->length_squared()); }
-    const double length_squared() const {
+    const double length() const { return std::sqrt(this->lengthSquared()); }
+    const double lengthSquared() const {
         return this->x * this->x + this->y * this->y + this->z * this->z;
+    }
+
+    bool nearZero() const {
+        double s = 1e-8;
+        return std::fabs(this->x) < s && std::fabs(this->y) < s &&
+               std::fabs(this->z) < s;
     }
 
     static Vec3 rand() { return {randDouble(), randDouble(), randDouble()}; }
@@ -80,7 +86,7 @@ class Vec3 {
     static Vec3 randUnitVector() {
         while (true) {
             Vec3   p     = Vec3::rand(-1, 1);
-            double lensq = p.length_squared();
+            double lensq = p.lengthSquared();
             if (1e-160 < lensq && lensq <= 1) {
                 return p / sqrt(lensq);
             }
