@@ -37,4 +37,20 @@ class Lambertian : public Material {
     Colour albedo;
 };
 
+class Metal : public Material {
+  public:
+    Metal(const Colour &albedo) : albedo(albedo) {}
+
+    bool scatter(const Ray &rIn, const Hittable::HitRecord &rec,
+                 Colour &attenuation, Ray &scattered) const override {
+        Vec3 reflected = rIn.dir.reflect(rec.normal);
+        scattered      = Ray(rec.p, reflected);
+        attenuation    = albedo;
+        return true;
+    }
+
+  private:
+    Colour albedo;
+};
+
 #endif // MATERIAL_H_

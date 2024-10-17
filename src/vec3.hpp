@@ -100,6 +100,8 @@ class Vec3 {
         }
         return -onUnitSphere;
     }
+
+    Vec3 reflect(const Vec3 &n) const { return *this - n * this->dot(n) * 2; }
 };
 
 #endif // VEC3_H_

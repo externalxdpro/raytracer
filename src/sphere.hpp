@@ -11,8 +11,8 @@ class Sphere : public Hittable {
     double                    radius;
     std::shared_ptr<Material> mat;
 
-    Sphere(const Vec3 &center, double radius)
-        : center(center), radius(std::fmax(0, radius)) {}
+    Sphere(const Vec3 &center, double radius, std::shared_ptr<Material> mat)
+        : center(center), radius(std::fmax(0, radius)), mat(mat) {}
 
     bool hit(const Ray &r, Interval t, HitRecord &rec) const override {
         Vec3 oc = center - r.origin;

@@ -3,6 +3,7 @@
 
 #include "colour.hpp"
 #include "hittable.hpp"
+#include "material.hpp"
 #include "util.hpp"
 #include "vec3.hpp"
 
@@ -93,8 +94,12 @@ class Camera {
 
         Hittable::HitRecord rec;
         if (world.hit(r, Interval(0.001, inf), rec)) {
-            Vec3 dir = rec.normal + Vec3::randUnitVector();
-            return rayColour(Ray(rec.p, dir), depth - 1, world) * 0.5;
+            Ray    scattered;
+            Colour attenuation;
+            if (rec.mat->scatter(r, rec, attenuation, scattered)) {
+                return attenuation * rayColour(scattered, depth - 1, world);
+            }
+            return {0, 0, 0};
         }
 
         Vec3   unitDir = r.dir.unitVector();
