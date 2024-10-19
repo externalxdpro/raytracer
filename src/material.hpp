@@ -67,10 +67,18 @@ class Dielectric : public Material {
         attenuation = {1, 1, 1};
         double ri   = rec.frontFace ? (1.0 / refractionIndex) : refractionIndex;
 
-        Vec3 unitDir   = rIn.dir.unitVector();
-        Vec3 refracted = unitDir.refract(rec.normal, ri);
+        Vec3   unitDir = rIn.dir.unitVector();
+        double cos     = std::fmin(-unitDir.dot(rec.normal), 1);
+        double sin     = std::sqrt(1.0 - cos * cos);
 
-        scattered = {rec.p, refracted};
+        Vec3 dir;
+        if (ri * sin > 1) {
+            dir = unitDir.reflect(rec.normal);
+        } else {
+            dir = unitDir.refract(rec.normal, ri);
+        }
+
+        scattered = {rec.p, dir};
         return true;
     }
 };
