@@ -56,4 +56,23 @@ class Metal : public Material {
     double fuzz;
 };
 
+class Dielectric : public Material {
+  public:
+    double refractionIndex;
+
+    Dielectric(double refractionIndex) : refractionIndex(refractionIndex) {}
+
+    bool scatter(const Ray &rIn, const Hittable::HitRecord &rec,
+                 Colour &attenuation, Ray &scattered) const override {
+        attenuation = {1, 1, 1};
+        double ri   = rec.frontFace ? (1.0 / refractionIndex) : refractionIndex;
+
+        Vec3 unitDir   = rIn.dir.unitVector();
+        Vec3 refracted = unitDir.refract(rec.normal, ri);
+
+        scattered = {rec.p, refracted};
+        return true;
+    }
+};
+
 #endif // MATERIAL_H_

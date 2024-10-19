@@ -14,8 +14,7 @@ int main(int argc, char *argv[]) {
         std::make_shared<Lambertian>(Colour(0.8, 0.8, 0));
     std::shared_ptr matCenter =
         std::make_shared<Lambertian>(Colour(0.1, 0.2, 0.5));
-    std::shared_ptr matLeft =
-        std::make_shared<Metal>(Colour(0.8, 0.8, 0.8), 0.3);
+    std::shared_ptr matLeft = std::make_shared<Dielectric>(1.5);
     std::shared_ptr matRight =
         std::make_shared<Metal>(Colour(0.8, 0.6, 0.2), 1);
 

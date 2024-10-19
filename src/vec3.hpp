@@ -102,6 +102,13 @@ class Vec3 {
     }
 
     Vec3 reflect(const Vec3 &n) const { return *this - n * this->dot(n) * 2; }
+
+    Vec3 refract(const Vec3 &n, double etaiOverEtat) const {
+        double cos     = std::fmin(-this->dot(n), 1);
+        Vec3   rPerp   = (*this + n * cos) * etaiOverEtat;
+        Vec3 rParallel = n * -std::sqrt(std::fabs(1.0 - rPerp.lengthSquared()));
+        return rPerp + rParallel;
+    }
 };
 
 #endif // VEC3_H_
