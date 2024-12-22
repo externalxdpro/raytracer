@@ -31,10 +31,13 @@ int main(int argc, char *argv[]) {
     cam.samplesPerPixel = 100;
     cam.maxDepth        = 50;
 
-    cam.vfov     = 90;
+    cam.vfov     = 20;
     cam.lookFrom = {-2, 2, 1};
     cam.lookAt   = {0, 0, -1};
     cam.vUp      = {0, 1, 0};
+
+    cam.defocusAngle = 10;
+    cam.focusDist    = 3.4;
 
     cam.render(world);
 

@@ -16,10 +16,14 @@ class Camera {
     int    imgWidth        = 100;
     int    samplesPerPixel = 10;
     int    maxDepth        = 10;
-    double vfov            = 90;
-    Vec3   lookFrom        = {0, 0, 0};
-    Vec3   lookAt          = {0, 0, -1};
-    Vec3   vUp             = {0, 1, 0};
+
+    double vfov     = 90;
+    Vec3   lookFrom = {0, 0, 0};
+    Vec3   lookAt   = {0, 0, -1};
+    Vec3   vUp      = {0, 1, 0};
+
+    double defocusAngle = 0;
+    double focusDist    = 10;
 
     void render(const Hittable &world) {
         initialize();
@@ -54,6 +58,8 @@ class Camera {
     Vec3   pixelDeltaU;
     Vec3   pixelDeltaV;
     Vec3   u, v, w;
+    Vec3   defocusDiskU;
+    Vec3   defocusDiskV;
 
     void initialize() {
         imgHeight = int(imgWidth / aspectRatio);
@@ -63,10 +69,9 @@ class Camera {
 
         center = lookFrom;
 
-        double focalLength    = (lookFrom - lookAt).length();
         double theta          = degToRad(vfov);
         double h              = std::tan(theta / 2);
-        double viewportHeight = 2 * h * focalLength;
+        double viewportHeight = 2 * h * focusDist;
         double viewportWidth  = viewportHeight * (double)(imgWidth) / imgHeight;
 
         w = (lookFrom - lookAt).unitVector();
@@ -80,8 +85,12 @@ class Camera {
         pixelDeltaV = viewportV / imgHeight;
 
         Vec3 viewportTopLeft =
-            center - (w * focalLength) - viewportU / 2 - viewportV / 2;
+            center - (w * focusDist) - viewportU / 2 - viewportV / 2;
         pixel0Pos = viewportTopLeft + (pixelDeltaU + pixelDeltaV) / 2;
+
+        auto defocusRadius = focusDist * std::tan(degToRad(defocusAngle / 2));
+        defocusDiskU       = u * defocusRadius;
+        defocusDiskV       = v * defocusRadius;
     }
 
     Ray getRay(int i, int j) const {
@@ -89,13 +98,18 @@ class Camera {
         Vec3 pixelSample = pixel0Pos + (pixelDeltaU * (i + offset.x)) +
                            (pixelDeltaV * (j + offset.y));
 
-        Vec3 origin = center;
+        Vec3 origin = defocusAngle <= 0 ? center : sampleDefocusDisk();
         Vec3 dir    = pixelSample - origin;
         return {origin, dir};
     }
 
     Vec3 sampleSquare() const {
         return {randDouble() - 0.5, randDouble() - 0.5, 0};
+    }
+
+    Vec3 sampleDefocusDisk() const {
+        Vec3 p = Vec3::randInUnitDisk();
+        return center + (defocusDiskU * p.x) + (defocusDiskV * p.y);
     }
 
     Colour rayColour(const Ray &r, int depth, const Hittable &world) const {

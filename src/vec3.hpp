@@ -81,6 +81,15 @@ class Vec3 {
                 this->x * other.y - this->y * other.x};
     }
 
+    static Vec3 randInUnitDisk() {
+        while (true) {
+            Vec3 p = {randDouble(-1, 1), randDouble(-1, 1), 0};
+            if (p.lengthSquared() < 1) {
+                return p;
+            }
+        }
+    }
+
     Vec3 unitVector() const { return *this / this->length(); }
 
     static Vec3 randUnitVector() {
