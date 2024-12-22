@@ -16,6 +16,7 @@ class Camera {
     int    imgWidth        = 100;
     int    samplesPerPixel = 10;
     int    maxDepth        = 10;
+    double vfov            = 90;
 
     void render(const Hittable &world) {
         initialize();
@@ -59,7 +60,9 @@ class Camera {
         center = {0, 0, 0};
 
         double focalLength    = 1;
-        double viewportHeight = 2;
+        double theta          = degToRad(vfov);
+        double h              = std::tan(theta / 2);
+        double viewportHeight = 2 * h * focalLength;
         double viewportWidth  = viewportHeight * (double)(imgWidth) / imgHeight;
 
         Vec3 viewportU = {viewportWidth, 0, 0};
