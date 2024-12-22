@@ -72,7 +72,7 @@ class Dielectric : public Material {
         double sin     = std::sqrt(1.0 - cos * cos);
 
         Vec3 dir;
-        if (ri * sin > 1) {
+        if (ri * sin > 1 || reflectance(cos, ri) > randDouble()) {
             dir = unitDir.reflect(rec.normal);
         } else {
             dir = unitDir.refract(rec.normal, ri);
@@ -80,6 +80,13 @@ class Dielectric : public Material {
 
         scattered = {rec.p, dir};
         return true;
+    }
+
+  private:
+    double reflectance(double cos, double refractionIndex) const {
+        double r0 = (1 - refractionIndex) / (1 + refractionIndex);
+        r0 *= r0;
+        return r0 + (1 - r0) * std::pow((1 - cos), 5);
     }
 };
 
