@@ -1,4 +1,20 @@
-#+title: README
+#+title: Raytracer
+
+* Images
+[[./images/small.png]]
+[[./images/fov.png]]
+[[./images/large.png]]
+
+* Features
++ Custom renderer
++ Light reflection
++ Light refraction
++ Different material types (metal, glass, matte)
++ Depth of field blurring
+
+* Dependencies
++ cmake
++ An image viewer
 
 * Run
 ** Build
@@ -12,6 +28,7 @@ build/raytracer > image.ppm
 #+end_src
 ** Open Image
 Open the ppm file in an image viewer
+
 * Run (One-Liner)
 #+begin_src shell
 cmake -B build && cmake --build build && build/raytracer > image.ppm
